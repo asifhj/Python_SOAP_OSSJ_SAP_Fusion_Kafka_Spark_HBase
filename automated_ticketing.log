@@ -1,0 +1,250 @@
+2015-10-09 13:27:36,663 - __main__ - INFO - Request No: 1 sent to OSSJ with SOAPEnvelope
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:v11="http://ossj.org/xml/Common/v1-5" xmlns:v12="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:v13="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:v14="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:v15="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:v16="http://ossj.org/xml/Common-CBEParty/v1-5" xmlns:v17="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:v0="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:v18="http://ossj.org/xml/Common-SharedAlarm/v1-5">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsse:Id="UsernameToken-14327075" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>super</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">juniper123</wsse:Password>
+      </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v1:createTroubleTicketByValueRequest>
+         <v1:troubleTicketValue>
+           <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
+            <v15:troubleDescription>0 201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v0:suspectObjectList>
+            <v0:item>
+                  <v0:suspectObjectId>K1915</v0:suspectObjectId>
+               </v0:item>
+            </v0:suspectObjectList>
+           </v1:troubleTicketValue>
+      </v1:createTroubleTicketByValueRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2015-10-09 13:27:36,664 - __main__ - INFO - Request No: 2 sent to OSSJ with SOAPEnvelope
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:v11="http://ossj.org/xml/Common/v1-5" xmlns:v12="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:v13="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:v14="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:v15="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:v16="http://ossj.org/xml/Common-CBEParty/v1-5" xmlns:v17="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:v0="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:v18="http://ossj.org/xml/Common-SharedAlarm/v1-5">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsse:Id="UsernameToken-14327075" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>super</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">juniper123</wsse:Password>
+      </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v1:createTroubleTicketByValueRequest>
+         <v1:troubleTicketValue>
+           <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
+            <v15:troubleDescription>1 201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v0:suspectObjectList>
+            <v0:item>
+                  <v0:suspectObjectId>K1915</v0:suspectObjectId>
+               </v0:item>
+            </v0:suspectObjectList>
+           </v1:troubleTicketValue>
+      </v1:createTroubleTicketByValueRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2015-10-09 13:27:36,664 - __main__ - INFO - Request No: 3 sent to OSSJ with SOAPEnvelope
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:v11="http://ossj.org/xml/Common/v1-5" xmlns:v12="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:v13="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:v14="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:v15="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:v16="http://ossj.org/xml/Common-CBEParty/v1-5" xmlns:v17="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:v0="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:v18="http://ossj.org/xml/Common-SharedAlarm/v1-5">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsse:Id="UsernameToken-14327075" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>super</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">juniper123</wsse:Password>
+      </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v1:createTroubleTicketByValueRequest>
+         <v1:troubleTicketValue>
+           <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
+            <v15:troubleDescription>2 201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v0:suspectObjectList>
+            <v0:item>
+                  <v0:suspectObjectId>K1915</v0:suspectObjectId>
+               </v0:item>
+            </v0:suspectObjectList>
+           </v1:troubleTicketValue>
+      </v1:createTroubleTicketByValueRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2015-10-09 13:27:36,667 - __main__ - INFO - Request No: 4 sent to OSSJ with SOAPEnvelope
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:v11="http://ossj.org/xml/Common/v1-5" xmlns:v12="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:v13="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:v14="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:v15="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:v16="http://ossj.org/xml/Common-CBEParty/v1-5" xmlns:v17="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:v0="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:v18="http://ossj.org/xml/Common-SharedAlarm/v1-5">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsse:Id="UsernameToken-14327075" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>super</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">juniper123</wsse:Password>
+      </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v1:createTroubleTicketByValueRequest>
+         <v1:troubleTicketValue>
+           <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
+            <v15:troubleDescription>3 201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v0:suspectObjectList>
+            <v0:item>
+                  <v0:suspectObjectId>K1915</v0:suspectObjectId>
+               </v0:item>
+            </v0:suspectObjectList>
+           </v1:troubleTicketValue>
+      </v1:createTroubleTicketByValueRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2015-10-09 13:27:36,667 - __main__ - INFO - Request No: 5 sent to OSSJ with SOAPEnvelope
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:v11="http://ossj.org/xml/Common/v1-5" xmlns:v12="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:v13="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:v14="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:v15="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:v16="http://ossj.org/xml/Common-CBEParty/v1-5" xmlns:v17="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:v0="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:v18="http://ossj.org/xml/Common-SharedAlarm/v1-5">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsse:Id="UsernameToken-14327075" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>super</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">juniper123</wsse:Password>
+      </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v1:createTroubleTicketByValueRequest>
+         <v1:troubleTicketValue>
+           <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
+            <v15:troubleDescription>4 201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v0:suspectObjectList>
+            <v0:item>
+                  <v0:suspectObjectId>K1915</v0:suspectObjectId>
+               </v0:item>
+            </v0:suspectObjectList>
+           </v1:troubleTicketValue>
+      </v1:createTroubleTicketByValueRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2015-10-09 13:27:42,201 - __main__ - INFO - Request No: 1 sent to OSSJ with SOAPEnvelope
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:v11="http://ossj.org/xml/Common/v1-5" xmlns:v12="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:v13="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:v14="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:v15="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:v16="http://ossj.org/xml/Common-CBEParty/v1-5" xmlns:v17="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:v0="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:v18="http://ossj.org/xml/Common-SharedAlarm/v1-5">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsse:Id="UsernameToken-14327075" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>super</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">juniper123</wsse:Password>
+      </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v1:createTroubleTicketByValueRequest>
+         <v1:troubleTicketValue>
+           <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
+            <v15:troubleDescription>0 201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v0:suspectObjectList>
+            <v0:item>
+                  <v0:suspectObjectId>K1915</v0:suspectObjectId>
+               </v0:item>
+            </v0:suspectObjectList>
+           </v1:troubleTicketValue>
+      </v1:createTroubleTicketByValueRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2015-10-09 13:27:42,203 - __main__ - INFO - Request No: 2 sent to OSSJ with SOAPEnvelope
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:v11="http://ossj.org/xml/Common/v1-5" xmlns:v12="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:v13="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:v14="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:v15="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:v16="http://ossj.org/xml/Common-CBEParty/v1-5" xmlns:v17="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:v0="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:v18="http://ossj.org/xml/Common-SharedAlarm/v1-5">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsse:Id="UsernameToken-14327075" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>super</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">juniper123</wsse:Password>
+      </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v1:createTroubleTicketByValueRequest>
+         <v1:troubleTicketValue>
+           <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
+            <v15:troubleDescription>1 201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v0:suspectObjectList>
+            <v0:item>
+                  <v0:suspectObjectId>K1915</v0:suspectObjectId>
+               </v0:item>
+            </v0:suspectObjectList>
+           </v1:troubleTicketValue>
+      </v1:createTroubleTicketByValueRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2015-10-09 13:27:42,203 - __main__ - INFO - Request No: 3 sent to OSSJ with SOAPEnvelope
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:v11="http://ossj.org/xml/Common/v1-5" xmlns:v12="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:v13="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:v14="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:v15="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:v16="http://ossj.org/xml/Common-CBEParty/v1-5" xmlns:v17="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:v0="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:v18="http://ossj.org/xml/Common-SharedAlarm/v1-5">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsse:Id="UsernameToken-14327075" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>super</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">juniper123</wsse:Password>
+      </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v1:createTroubleTicketByValueRequest>
+         <v1:troubleTicketValue>
+           <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
+            <v15:troubleDescription>2 201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v0:suspectObjectList>
+            <v0:item>
+                  <v0:suspectObjectId>K1915</v0:suspectObjectId>
+               </v0:item>
+            </v0:suspectObjectList>
+           </v1:troubleTicketValue>
+      </v1:createTroubleTicketByValueRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2015-10-09 13:27:42,206 - __main__ - INFO - Request No: 4 sent to OSSJ with SOAPEnvelope
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:v11="http://ossj.org/xml/Common/v1-5" xmlns:v12="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:v13="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:v14="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:v15="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:v16="http://ossj.org/xml/Common-CBEParty/v1-5" xmlns:v17="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:v0="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:v18="http://ossj.org/xml/Common-SharedAlarm/v1-5">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsse:Id="UsernameToken-14327075" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>super</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">juniper123</wsse:Password>
+      </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v1:createTroubleTicketByValueRequest>
+         <v1:troubleTicketValue>
+           <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
+            <v15:troubleDescription>3 201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v0:suspectObjectList>
+            <v0:item>
+                  <v0:suspectObjectId>K1915</v0:suspectObjectId>
+               </v0:item>
+            </v0:suspectObjectList>
+           </v1:troubleTicketValue>
+      </v1:createTroubleTicketByValueRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+2015-10-09 13:27:42,207 - __main__ - INFO - Request No: 5 sent to OSSJ with SOAPEnvelope
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:v11="http://ossj.org/xml/Common/v1-5" xmlns:v12="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:v13="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:v14="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:v15="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:v16="http://ossj.org/xml/Common-CBEParty/v1-5" xmlns:v17="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:v0="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:v18="http://ossj.org/xml/Common-SharedAlarm/v1-5">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsse:Id="UsernameToken-14327075" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>super</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">juniper123</wsse:Password>
+      </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v1:createTroubleTicketByValueRequest>
+         <v1:troubleTicketValue>
+           <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
+            <v15:troubleDescription>4 201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v0:suspectObjectList>
+            <v0:item>
+                  <v0:suspectObjectId>K1915</v0:suspectObjectId>
+               </v0:item>
+            </v0:suspectObjectList>
+           </v1:troubleTicketValue>
+      </v1:createTroubleTicketByValueRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
