@@ -1,26 +1,27 @@
 __author__ = 'asifj'
 import requests
-import time
 from threading import Thread
 import csv
-import logging
 import re
 import traceback
-import sys
+import logging
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+# create logger
+logger = logging.getLogger('OSS/J-SOAP-SAP')
+logger.setLevel(logging.DEBUG)
 
-# create a file handler
-handler = logging.FileHandler('automated_ticketing.log')
-handler.setLevel(logging.INFO)
+# create console handler and set level to debug
+ch = logging.FileHandler('automated_ticketing.log')
+ch.setLevel(logging.DEBUG)
 
-# create a logging format
+# create formatter
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
 
-# add the handlers to the logger
-logger.addHandler(handler)
+# add formatter to ch
+ch.setFormatter(formatter)
+
+# add ch to logger
+logger.addHandler(ch)
 
 username = 'super'
 password = 'juniper123'
@@ -38,7 +39,7 @@ body = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envel
       <v1:createTroubleTicketByValueRequest>
          <v1:troubleTicketValue>
            <v15:troubleDetectionTime>2015-11-09T00:00:00.000+05:00</v15:troubleDetectionTime>
-            <v15:troubleDescription>201416-4- BNG-Basic_Netw_Funct - TestFR OSSJ Juniper 47 NE Name: BNG Component Name: BNG-Basic_Netw_Funct Card Type: - select or enter a value - Serial Number: GG0213130986 </v15:troubleDescription>
+            <v15:troubleDescription>Creating test case to verify SAP and Hadoop functionality</v15:troubleDescription>
             <v0:suspectObjectList>
             <v0:item>
                   <v0:suspectObjectId>K1915</v0:suspectObjectId>
@@ -49,46 +50,54 @@ body = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envel
    </soapenv:Body>
 </soapenv:Envelope>
 """ % (username, password)
-
 url="https://10.204.95.205/aimOSSTroubleTicketService/JVTTroubleTicketWS"
-encoded_request = body.encode('utf-8')
-headers = {'content-type': 'text/xml',
-           "Content-Length": len(encoded_request)}
 
-def create_ticket(i, url, body, encoded_request, headers, spamwriter):
+
+def create_ticket(i, url, body, spamwriter, logger):
     try:
-        body = body.replace("<v15:troubleDescription>", "<v15:troubleDescription>"+str(i)+" ")
+        body = body.replace("<v15:troubleDescription>", "<v15:troubleDescription>"+str(i)+" Some Issue ")
+        encoded_request = body.encode('utf-8')
+        headers = {'content-type': 'text/xml',
+                   "Content-Length": len(encoded_request)}
         row = [i]
-        row.append(body.replace("\n",""))
-        response = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"/><soap:Body><ns2:createTroubleTicketByValueResponse xmlns="http://ossj.org/xml/Common/v1-5" xmlns:ns10="http://ossj.org/xml/Common-SharedAlarm/v1-5" xmlns:ns11="http://docs.oasis-open.org/wsrf/bf-2" xmlns:ns12="http://www.w3.org/2005/08/addressing" xmlns:ns13="http://docs.oasis-open.org/wsn/b-2" xmlns:ns14="http://docs.oasis-open.org/wsn/t-1" xmlns:ns15="http://docs.oasis-open.org/wsrf/r-2" xmlns:ns2="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:ns3="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:ns4="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:ns5="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:ns6="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:ns7="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:ns8="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:ns9="http://ossj.org/xml/Common-CBEParty/v1-5"><ns2:troubleTicketKey><type>org.ossj.xml.troubleticket_x790.v0_5.X790TroubleTicketKey</type><primaryKey><primaryKey>2015-1009-0173</primaryKey></primaryKey></ns2:troubleTicketKey></ns2:createTroubleTicketByValueResponse></soap:Body></soap:Envelope>'
-        #response = requests.post(url, data=encoded_request, headers=headers, verify=False)
+
+        #response = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"/><soap:Body><ns2:createTroubleTicketByValueResponse xmlns="http://ossj.org/xml/Common/v1-5" xmlns:ns10="http://ossj.org/xml/Common-SharedAlarm/v1-5" xmlns:ns11="http://docs.oasis-open.org/wsrf/bf-2" xmlns:ns12="http://www.w3.org/2005/08/addressing" xmlns:ns13="http://docs.oasis-open.org/wsn/b-2" xmlns:ns14="http://docs.oasis-open.org/wsn/t-1" xmlns:ns15="http://docs.oasis-open.org/wsrf/r-2" xmlns:ns2="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:ns3="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:ns4="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:ns5="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:ns6="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:ns7="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:ns8="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:ns9="http://ossj.org/xml/Common-CBEParty/v1-5"><ns2:troubleTicketKey><type>org.ossj.xml.troubleticket_x790.v0_5.X790TroubleTicketKey</type><primaryKey><primaryKey>2015-1009-0173</primaryKey></primaryKey></ns2:troubleTicketKey></ns2:createTroubleTicketByValueResponse></soap:Body></soap:Envelope>'
+        response = requests.post(url, data=encoded_request, headers=headers, verify=False)
         #response = requests.request('GET', 'http://httpbin.org/get')
         #response.text = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"/><soap:Body><ns2:createTroubleTicketByValueResponse xmlns="http://ossj.org/xml/Common/v1-5" xmlns:ns10="http://ossj.org/xml/Common-SharedAlarm/v1-5" xmlns:ns11="http://docs.oasis-open.org/wsrf/bf-2" xmlns:ns12="http://www.w3.org/2005/08/addressing" xmlns:ns13="http://docs.oasis-open.org/wsn/b-2" xmlns:ns14="http://docs.oasis-open.org/wsn/t-1" xmlns:ns15="http://docs.oasis-open.org/wsrf/r-2" xmlns:ns2="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:ns3="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:ns4="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:ns5="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:ns6="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:ns7="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:ns8="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:ns9="http://ossj.org/xml/Common-CBEParty/v1-5"><ns2:troubleTicketKey><type>org.ossj.xml.troubleticket_x790.v0_5.X790TroubleTicketKey</type><primaryKey><primaryKey>2015-1009-0173</primaryKey></primaryKey></ns2:troubleTicketKey></ns2:createTroubleTicketByValueResponse></soap:Body></soap:Envelope>'
         m = re.match(r'.+<primarykey>([\d|\-]+)</primaryKey>.+', response.text, re.I|re.M)
         if m:
-            print m.groups(0)[0]
+            row.append(m.groups(0)[0])
+            row.append(body.replace("\n",""))
+            row.append(response.text.replace("\n",""))
+            logger.info("Request No: "+str(i)+" sent to OSSJ with SOAPEnvelope\nRequest No: "+str(i)+" is processed with response\n"+str(response.text)+"CaseID: "+str(m.groups(0)[0])+"\n")
+            print "Request No: "+str(i)+" sent to OSSJ with SOAPEnvelope \nRequest No: "+str(i)+" is processed with response\nCaseID: "+str(m.groups(0)[0]+"\n")
+            spamwriter.writerow(row)
         else:
-            print "Request No: "+str(i)+" did not processed\n"
-            logger.error("Request No: "+str(i)+" did not processed\n"+str(response.text))
-        row.append(response.text.replace("\n",""))
-        logger.info("Request No: "+str(i)+" sent to OSSJ with SOAPEnvelope\n"+str(body))
-        print "Request No: "+str(i)+" sent to OSSJ with SOAPEnvelope"
-        logger.info("Request No: "+str(i)+" is processed with response\n"+str(response.text))
-        print "Request No: "+str(i)+" is processed with response"
-        spamwriter.writerow(row)
+            m = re.match(r'.+combination. Trouble Ticket Id: ([\d|\-]+).+', response.text, re.I|re.M)
+            if m:
+                row.append(m.groups(0)[0])
+                row.append(body.replace("\n",""))
+                row.append(response.text.replace("\n",""))
+                spamwriter.writerow(row)
+                print "Request No: "+str(i)+" did not processed\n"
+                logger.error("Request No: "+str(i)+" did not processed\n"+str(response.text)+"\n")
     except Exception:
         error = traceback.format_exc()
         print error
-        logger.error("Request No: "+str(i)+" did not processed\n"+str(response.text))
-        logger.error(error)
+        logger.error("Request No: "+str(i)+" did not processed\n"+str(response.text)+"\n"+error+"\n")
+        '''logger.info('info message')
+        logger.warn('warn message')
+        logger.error('error message')
+        logger.critical('critical message')'''
 
 threads = []
 with open('Tickets.csv', 'w') as csv_writer:
     spamwriter = csv.writer(csv_writer, delimiter=',', quotechar='\'', quoting=csv.QUOTE_MINIMAL)
-    for i in range(1,2):
-        with open('Tickets.csv', 'w') as csv_writer:
-            thread = Thread(target=create_ticket, args=(i, url, body, encoded_request, headers, spamwriter))
-            threads += [thread]
-            thread.start()
+    for i in range(1, 100):
+        print "Request "+str(i)
+        thread = Thread(target=create_ticket, args=(i, url, body, spamwriter, logger))
+        threads += [thread]
+        thread.start()
     for thread in threads:
         thread.join()
