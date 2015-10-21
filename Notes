@@ -1,1 +1,140 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"/><soap:Body><ns2:createTroubleTicketByValueResponse xmlns="http://ossj.org/xml/Common/v1-5" xmlns:ns10="http://ossj.org/xml/Common-SharedAlarm/v1-5" xmlns:ns11="http://docs.oasis-open.org/wsrf/bf-2" xmlns:ns12="http://www.w3.org/2005/08/addressing" xmlns:ns13="http://docs.oasis-open.org/wsn/b-2" xmlns:ns14="http://docs.oasis-open.org/wsn/t-1" xmlns:ns15="http://docs.oasis-open.org/wsrf/r-2" xmlns:ns2="http://ossj.org/xml/TroubleTicket/v1-2" xmlns:ns3="http://ossj.org/xml/Common-CBECore/v1-5" xmlns:ns4="http://ossj.org/xml/Common-CBEBi/v1-5" xmlns:ns5="http://ossj.org/xml/Common-CBELocation/v1-5" xmlns:ns6="http://ossj.org/xml/TroubleTicket-CBETrouble/v1-2" xmlns:ns7="http://ossj.org/xml/TroubleTicket_x790/v0-5" xmlns:ns8="http://ossj.org/xml/Common-CBEDatatypes/v1-5" xmlns:ns9="http://ossj.org/xml/Common-CBEParty/v1-5"><ns2:troubleTicketKey><type>org.ossj.xml.troubleticket_x790.v0_5.X790TroubleTicketKey</type><primaryKey><primaryKey>2015-1009-0173</primaryKey></primaryKey></ns2:troubleTicketKey></ns2:createTroubleTicketByValueResponse></soap:Body></soap:Envelope>
+
+
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+
+./kafka-topics.sh --describe --zookeeper localhost:2181 --topic test
+
+./kafka-topics.sh --list --zookeeper localhost:2181
+
+./kafka-console-consumer.sh --zookeeper localhost:2181 --topic test --from-beginning
+
+./kafka-console-producer.sh --broker-list localhost:9092 --topic test
+
+
+
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic my-replicated-topic
+
+jdbc:phoenix:hdpstpprxy:2181:/hbase
+
+Please find API details for point lookups,
+
+1.	Get case by Case Id.
+URL:
+http://172.22.147.248:8092/api/case-manager/cases/{caseId}
+       Method: GET
+
+2.	Get case note description by case id and note id.
+URL:
+http://172.22.147.248:8092/api/case-manager/cases/{caseId}/caseNotes/{noteId}/description
+       Method: GET
+
+3.	Get case note log by case id and note id.
+URL:
+http://172.22.147.248:8092/api/case-manager/cases/{caseId}/caseNotes/{noteId}/log
+       Method: GET
+
+4.	Get Account by account Id.
+URL:
+http://172.22.147.248:8092/api/user-manager/accounts/{accountId}
+       Method: GET
+
+5.	Get Account by account name.
+URL:
+http://172.22.147.248:8092/api/user-manager/accounts
+Method: POST
+
+Pass the account name in the request body as follow and set the content type to “application/json”
+{“accountName”:“Name of the account”}
+
+6.	Get User by User Id
+URL:
+http://172.22.147.248:8092/api/user-manager/users/{userId}
+Method: GET
+
+7.	Get User by User name
+URL:
+http://172.22.147.248:8092/api/user-manager/users
+Method: POST
+
+Pass the account name in the request body as follow and set the content type to “application/json”
+{“userName”:“Email Id / user name of the User”}
+
+2015-1019-T-0019
+
+if str(document['betaType']).strip().strip()=="" if response['betaType'] is None else response['betaType']
+and str(document['caseId']).strip()=="" if response['srId']  is None else response['srId']\
+and str(document['contractId']).strip()=="" if response['entitlement']['contractId'] is None else response['entitlement']['contractId']\
+and str(document['contractStatus']).strip()=="" if response['entitlement']['contractStatus'] is None else response['entitlement']['contractStatus']\
+and str(document['courtesykey']).strip()=="" if response['courtesykey'] is None else response['courtesykey']\
+and str(document['criticalOutage']).strip()=="" if response['criticalOutage'] is None else response['criticalOutage']\
+and str(document['cve']).strip()=="" if response['cve'] is None else response['cve']\
+and str(document['cvss']).strip()=="" if response['cvss'] is None else response['cvss']\
+and str(document['description']).strip()=="" if response['desc'] is None else response['desc']\
+and str(document['employeeEmail']).strip()=="" if response['employeeEmail'] is None else response['employeeEmail']\
+and str(document['employeeId']).strip()=="" if response['employeeId'] is None else response['employeeId']\
+and str(document['endDate']).strip()=="" if response['entitlement']['endDate'] is None else response['employeeId']\
+and str(document['entitledSerialNumber']).strip()=="" if response['entitlement']['entitledSerialNumber'] is None else response['entitlement']['entitledSerialNumber']\
+and str(document['entitlementChecked']).strip()=="" if response['entitlement']['entitlementChecked'] is None else response['entitlement']['entitlementChecked']\
+and str(document['entitlementServiceLevel']).strip()=="" if response['entitlement']['entitlementServiceLevel'] is None else response['entitlement']['entitlementServiceLevel']\
+and str(document['entitlementSource']).strip()=="" if response['entitlement']['entitlementSource'] is None else response['entitlement']['entitlementSource']\
+and str(document['escalationLevelKey']).strip()=="" if response['outage']['escalationLevelKey'] is None else response['outage']['escalationLevelKey']\
+and str(document['escalationkey']).strip()=="" if response['entitlement']['escalationkey'] is None else response['entitlement']['escalationkey']\
+and str(document['externallyReported']).strip()=="" if response['externallyReported'] is None else response['externallyReported']\
+and str(document['followupMethod']).strip()=="" if response['outage']['followupMethod'] is None else response['outage']['followupMethod']\
+and str(document['followupMethodKey']).strip()=="" if response['outage']['followupMethodKey'] is None else response['outage']['followupMethodKey']\
+and str(document['jsaAdvisoryBoard']).strip()=="" if response['jsaAdvisoryBoard'] is None else response['jsaAdvisoryBoard']\
+and str(document['jtac']).strip()=="" if response['jtac'] is None else response['jtac']\
+and str(document['knowledgeArticle']).strip()=="" if response['outage']['knowledgeArticle'] is None else response['outage']['knowledgeArticle']\
+and str(document['numberOfSystemsAffected']).strip()=="" if response['outage']['numberOfSystemsAffected'] is None else response['outage']['numberOfSystemsAffected']\
+and str(document['numberOfUsersAffected']).strip()=="" if response['outage']['numberOfUsersAffected'] is None else response['outage']['numberOfUsersAffected']\
+and str(document['outageCauseKey']).strip()=="" if response['outage']['outageCauseKey'] is None else response['outage']['outageCauseKey']\
+and str(document['outageImpactKey']).strip()=="" if response['outage']['outageImpactKey'] is None else response['outage']['outageImpactKey']\
+and str(document['outageInfoAvailable']).strip()=="" if response['outage']['outageInfoAvailable'] is None else response['outage']['outageInfoAvailable']\
+and str(document['outageKey']).strip()=="" if response['outage']['outageKey'] is None else response['outage']['outageKey']\
+and str(document['outageTypeKey']).strip()=="" if response['outage']['outageTypeKey'] is None else response['outage']['outageTypeKey']\
+and str(document['outsourcer']).strip()=="" if response['outage']['outsourcer'] is None else response['outage']['outsourcer']\
+and str(document['overideOutage']).strip()=="" if response['outage']['overideOutage'] is None else response['outage']['overideOutage']\
+and str(document['platform']).strip()=="" if response['platform'] is None else response['platform']\
+and str(document['previousOwnerSkill']).strip()=="" if response['outage']['previousOwnerSkill'] is None else response['outage']['previousOwnerSkill']\
+and str(document['previousTeam']).strip()=="" if response['outage']['previousTeam'] is None else response['outage']['previousTeam']\
+and str(document['priority']).strip()=="" if response['priority'] is None else response['priority']\
+and str(document['priorityKey']).strip()=="" if response['priorityKey'] is None else response['priorityKey']\
+and str(document['processType']).strip()=="" if response['processType'] is None else response['processType']\
+and str(document['processTypeDescription']).strip()=="" if response['processTypeDes'] is None else response['processTypeDesc']\
+and str(document['productId']).strip()=="" if response['productId'] is None else response['productId']\
+and str(document['productSeries']).strip()=="" if response['productSeries'] is None else response['productSeries']\
+and str(document['raFa']).strip()=="" if response['outage']['raFa'] is None else response['outage']['raFa']\
+and str(document['reason']).strip()=="" if response['reason'] is None else response['reason']\
+and str(document['release']).strip()=="" if response['release'] is None else response['release']\
+and str(document['reporterDetails']).strip()=="" if response['reporterDetails'] is None else response['reporterDetails']\
+and str(document['routerName']).strip()=="" if response['outage']['routerName'] is None else response['outage']['routerName']\
+and str(document['secVulnerability']).strip()=="" if response['secVulnerability'] is None else response['secVulnerability']\
+and str(document['serialNumber']).strip()=="" if response['serialNumber'] is None else response['serialNumber']\
+and str(document['severity']).strip()=="" if response['severity'] is None else response['severity']\
+and str(document['severityKey']).strip()=="" if response['severityKey'] is None else response['severityKey']\
+and str(document['sirtBundle']).strip()=="" if response['sirtBundle'] is None else response['sirtBundle']\
+and str(document['sku']).strip()=="" if response['entitlement']['sku'] is None else response['entitlement']['sku']\
+and str(document['smeContact']).strip()=="" if response['smeContact'] is None else response['smeContact']\
+and str(document['software']).strip()=="" if response['software'] is None else response['software']\
+and str(document['specialRelease']).strip()=="" if response['specialRelease'] is None else response['specialRelease']\
+and str(document['srCategory1']).strip()=="" if response['srCat1'] is None else response['srCat1']\
+and str(document['srCategory2']).strip()=="" if response['srCat2'] is None else response['srCat2']\
+and str(document['srCategory3']).strip()=="" if response['srCat3'] is None else response['srCat3']\
+and str(document['srCategory4']).strip()=="" if response['srCat4'] is None else response['srCat4']\
+and str(document['startDate']).strip()=="" if response['entitlement']['startDate'] is None else response['entitlement']['startDate']\
+and str(document['status']).strip()=="" if response['status'] is None else response['status']\
+and str(document['statusKey']).strip()=="" if response['statusKey'] is None else response['statusKey']\
+and str(document['technicalCategory1']).strip()=="" if response['techCat1'] is None else response['techCat1']\
+and str(document['technicalCategory2']).strip()=="" if response['techCat2'] is None else response['techCat2']\
+and str(document['technicalCategory3']).strip()=="" if response['techCat3'] is None else response['techCat3']\
+and str(document['technicalCategory4']).strip()=="" if response['techCat4'] is None else response['techCat4']\
+and str(document['temperature']).strip()=="" if response['outage']['temperature'] is None else response['outage']['temperature']\
+and str(document['theaterKey']).strip()=="" if response['outage']['theaterKey'] is None else response['outage']['theaterKey']\
+and str(document['top5']).strip()=="" if response['outage']['top5'] is None else response['outage']['top5']\
+and str(document['totalOutageTime']).strip()=="" if response['outage']['totalOutageTime'] is None else response['outage']['totalOutageTime']\
+and str(document['urgency']).strip()=="" if response['urgency'] is None else response['urgency']\
+and str(document['urgencyKey']).strip()=="" if response['urgencyKey'] is None else response['urgencyKey']\
+and str(document['version']).strip()=="" if response['version'] is None else response['version']\
+and str(document['viaKey']).strip()=="" if response['outage']['viaKey'] is None else response['outage']['viaKey']\
+and str(document['warrantyEndDate']).strip()=="" if response['entitlement']['warrantyEndDate'] is None else response['entitlement']['warrantyEndDate']\
