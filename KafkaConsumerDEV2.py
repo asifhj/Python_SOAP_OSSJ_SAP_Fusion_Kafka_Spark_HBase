@@ -11,7 +11,7 @@ logging.basicConfig(
 
 client = KafkaClient(hosts="172.22.147.232:9092,172.22.147.242:9092,172.22.147.243:9092")
 print client.topics
-topic = client.topics['SAPEvent']
+topic = client.topics['SAPNotesEvent']
 print topic.partitions
 consumer = topic.get_simple_consumer()
 '''for message in consumer:

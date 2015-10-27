@@ -2,10 +2,8 @@ __author__ = 'asifj'
 import logging
 from kafka import KafkaConsumer
 from pymongo import MongoClient
-import re
 import json
 import traceback
-import sys
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)s:%(name)s:%(thread)d:%(levelname)s:%(process)d:%(message)s',
@@ -13,17 +11,17 @@ logging.basicConfig(
 )
 
 def drop_database():
-    client = MongoClient('192.168.56.101', 27017)
-    client.drop_database("test")
+    client = MongoClient('10.219.48.134', 27017)
+    client.drop_database("SAPEventDebug")
 
-def upsert_record(coll, doc):
-    client = MongoClient('192.168.56.101', 27017)
-    db = client['test']
+def insert_document(coll, doc):
+    client = MongoClient('10.219.48.134', 27017)
+    db = client['SAPEventDebug']
     collection = db[coll]
-    #post_id = collection.insert_one(doc).inserted_id
-    key = {'caseId': doc[coll]['caseId']}
     doc = doc[coll]
-    post_id = collection.update(key, doc, upsert=True);
+    #key = {'caseId': doc[coll]['caseId']}
+    #print key
+    post_id = collection.insert(doc);
     return post_id
 
 # To consume messages
@@ -43,16 +41,17 @@ for message in consumer:
     offset = message.offset
     key = message.key
     message = message.value
+    print "================================================================================================================="
     if not message is None:
         try:
             document = json.loads(message)
-            print document.keys()
-            print message_no
+            print "Event Type: "+str(document.keys())
+            print "Message No: "+str(message_no)
             collection = document.keys()[0]
-            #print document
-            print upsert_record(collection, document)
+            print insert_document(collection, document)
         except Exception, err:
             print "CustomException"
-            #print(message)
             print(traceback.format_exc())
+    print "================================================================================================================="
+    print "\n"
     message_no += 1
