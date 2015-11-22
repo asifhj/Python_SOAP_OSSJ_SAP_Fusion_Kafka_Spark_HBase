@@ -12,25 +12,50 @@ logging.basicConfig(
     level=logging.INFO
 )
 
+
+DB_VM_MONGO_IP = "10.219.48.134"
+DB_LOCAL_MONGO_IP = "192.168.56.101"
+DB_NAME = "SAPNotesTopic"
+DB_PORT = 27017
+KAFKA_IP = "172.22.147.242"
+KAFAK_PORT = "9020"
+KAFKA_TOPIC = "SAPNotesTopic"
+url = "http://172.22.147.248:8092/api/"
+
+
 def drop_database():
-    client = MongoClient('10.219.48.134', 27017)
-    client.drop_database("SAPNotesTopic")
+    client = MongoClient(DB_LOCAL_MONGO_IP, DB_PORT)
+    client.drop_database(DB_NAME)
+    client.close()
+
+
+def upsert_document_debug(coll, doc):
+    client = MongoClient(DB_LOCAL_MONGO_IP , DB_PORT)
+    db = client[DB_NAME]
+    collection = db[coll+"Debug"]
+    post_id = collection.insert(doc[coll])
+    client.close()
+    return post_id
+
 
 def upsert_document(coll, doc):
-    client = MongoClient('10.219.48.134', 27017)
-    db = client['SAPNotesTopic']
+    client = MongoClient(DB_LOCAL_MONGO_IP, DB_PORT)
+    db = client[DB_NAME]
     collection = db[coll]
     key = {'caseId': doc[coll]['caseId']}
     print key
     doc = doc[coll]
     post_id = collection.update(key, doc, upsert=True);
+    client.close()
     return post_id
 
+print "Cleaning old Mongo docs..."
+drop_database()
+print "Mongo docs cleaned!"
 # To consume messages
-consumer = KafkaConsumer('SAPNotesTopic', bootstrap_servers=['172.22.147.242:9092'], auto_commit_enable=False, auto_offset_reset="smallest")
+consumer = KafkaConsumer(KAFKA_TOPIC, bootstrap_servers=[KAFKA_IP+':9092'], auto_commit_enable=False, auto_offset_reset="smallest")
 # group_id='CLIEvent-grp',
 #consumer.configure(bootstrap_servers=['172.22.147.242:9092', '172.22.147.232:9092', '172.22.147.243:9092'], auto_commit_enable=False, auto_offset_reset="smallest")
-drop_database()
 message_no = 1
 for message in consumer:
     # message value is raw byte string -- decode if necessary!
@@ -50,9 +75,12 @@ for message in consumer:
             print "Event Type: "+str(document.keys())
             print "Message No: "+str(message_no)
             collection = document.keys()[0]
+            print "Debug Document ID: "+str(upsert_document_debug(collection, document))
+            document = json.loads(message)
             print upsert_document(collection, document)
         except Exception, err:
             print "CustomException"
+            print "Kafka Message: "+str(message)
             print(traceback.format_exc())
     print "================================================================================================================="
     print "\n"

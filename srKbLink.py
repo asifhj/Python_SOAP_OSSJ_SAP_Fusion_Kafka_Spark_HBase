@@ -18,155 +18,125 @@ class HBase:
         pass
 
     def get_case_by_case_id(self, document, row):
-        print self.url+"case-manager/cases/"+str(document['caseId'])
+        print "API URL: "+self.url+"case-manager/cases/"+str(document['caseId'])
         r = requests.get(self.url+"case-manager/cases/"+str(document['caseId']))
         print "CaseID: "+str(document['caseId'])
         print "Response: "+str(r.status_code)
-        keys = len(document.keys())
-        print "Keys: "+str(keys)
+        #keys = len(document.keys())
+        #print "Keys: "+str(keys)
         row.append(r.status_code)
         status = 0
         if r.status_code==200:
             response = json.loads(r.text)
-            print json.dumps(document['link'], indent=4)
-            print json.dumps(response['kbLinks'], indent=4)
-            #print document
             table = []
             if not (str(document['caseId']).strip() == "" if response['srId'] is None else str(response['srId']).strip()):
                 print "Incorrect value for 'caseId'!"
                 status = 1
-
-            response_kbLinks_len = len(response['kbLinks'])
             document_kbLinks_len = len(document['link'])
-            print cmp(response['kbLinks'], document['link'])
-            print set(response['kbLinks'].items()) & set(document['link'].items())
+            response_kbLinks_len = 0
+            if type(document['link']) is dict:
+                print "kBLinks in document is not an array!"
+                document_kbLinks_len = 1
+                document['link'] =  [document['link']]
+            if response['kbLinks'] is not None:
+                response_kbLinks_len = len(response['kbLinks'])
+            else:
+                response_kbLinks_len = 0
 
-            print document_kbLinks_len
-            print response_kbLinks_len
-            #print json.dumps(document['link'], indent=4)
-            #print json.dumps(response['kbLinks'], indent=4)
-            for i in range(0, document_kbLinks_len):
-                #print json.dumps(document['link'][i], indent=4)
-                #print json.dumps(response['kbLinks'][i], indent=4)
-                if not document['link'][i]['kbId'] == response['kbLinks'][document_kbLinks_len-1-i]['kbId']:
-                    tmp = [i]
-                    tmp.append("kbId")
-                    tmp.append(document['link'][i]['kbId'])
-                    tmp.append(response['kbLinks'][document_kbLinks_len-1-i]['kbId'])
-                    tmp.append("Failed")
-                    table.append(tmp)
-                    
+            print "Number of kbLinks in document: "+str(document_kbLinks_len)
+            print "Number of kbLinks in API response: "+str(response_kbLinks_len)
 
-                if not document['link'][i]['status'] == "" if response['kbLinks'][document_kbLinks_len-1-i]['status'] is None else response['kbLinks'][document_kbLinks_len-1-i]['status']:
-                    tmp = [i]
-                    tmp.append("status")
-                    tmp.append(document['link'][i]['status'])
-                    tmp.append(response['kbLinks'][document_kbLinks_len-1-i]['status'])
-                    tmp.append("Failed")
-                    table.append(tmp)
-                    status = 1
+            if document_kbLinks_len==0:
+                print "No kbLinks found in document!"
+                row.append("No kbLinks found in document!")
+                print "Kafka: "+str(json.dumps(document['link'], sort_keys=True))
+                print "API: "+str(json.dumps(response['kbLinks'], sort_keys=True))
+                return row
+            if response_kbLinks_len==0 and document_kbLinks_len>0:
+                print "No kbLinks found in API response but present in document."
+                row.append("No kbLinks found in API response but present in document.")
+                print "Kafka: "+str(json.dumps(document['link'], sort_keys=True))
+                print "API: "+str(json.dumps(response['kbLinks'], sort_keys=True))
+                return row
 
-                if not document['link'][i]['description'] == response['kbLinks'][document_kbLinks_len-1-i]['description']:
-                    tmp = [i]
-                    tmp.append("description")
-                    tmp.append(document['link'][i]['description'])
-                    tmp.append(response['kbLinks'][document_kbLinks_len-1-i]['description'])
-                    tmp.append("Failed")
-                    table.append(tmp)
-                    status = 1
-
-                if not document['link'][i]['internalId'] == response['kbLinks'][document_kbLinks_len-1-i]['internalId']:
-                    tmp = [i]
-                    tmp.append("internalId")
-                    tmp.append(document['link'][i]['internalId'])
-                    tmp.append(response['kbLinks'][document_kbLinks_len-1-i]['internalId'])
-                    tmp.append("Failed")
-                    table.append(tmp)
-                    status = 1
-
-                if not document['link'][i]['url'] == response['kbLinks'][document_kbLinks_len-1-i]['url']:
-                    tmp = [i]
-                    tmp.append("url")
-                    tmp.append(document['link'][i]['url'])
-                    tmp.append(response['kbLinks'][document_kbLinks_len-1-i]['url'])
-                    tmp.append("Failed")
-                    table.append(tmp)
-                    status = 1
-
-                if not document['link'][i]['kbDate'] == response['kbLinks'][document_kbLinks_len-1-i]['kbDate']:
-                    tmp = [i]
-                    tmp.append("kbDate")
-                    tmp.append(document['link'][i]['kbDate'])
-                    tmp.append(response['kbLinks'][document_kbLinks_len-1-i]['kbDate'])
-                    tmp.append("Failed")
-                    table.append(tmp)
-                    status = 1
-
-                if not document['link'][i]['sourceVisibility'] == "" if response['kbLinks'][document_kbLinks_len-1-i]['srcVisiblity'] is None else response['kbLinks'][document_kbLinks_len-1-i]['srcVisiblity']:
-                    tmp = [i]
-                    tmp.append("sourceVisibility/srcVisiblity")
-                    tmp.append(document['link'][i]['sourceVisibility'])
-                    tmp.append(response['kbLinks'][document_kbLinks_len-1-i]['srcVisiblity'])
-                    tmp.append("Failed")
-                    table.append(tmp)
-                    status = 1
-
-                '''if not document['link'][i]['integrated'] == response['kbLinks'][document_kbLinks_len-1-i]['integrated']:
-                    tmp = [i]
-                    tmp.append("integrated")
-                    tmp.append(document['link'][i]['integrated'])
-                    tmp.append(response['kbLinks'][document_kbLinks_len-1-i]['integrated'])
-                    tmp.append("Failed")
-                    table.append(tmp)
-                    status = 1'''
-
-                if not document['link'][i]['srVisibility'] == response['kbLinks'][document_kbLinks_len-1-i]['srVisibility']:
-                    tmp = [i]
-                    tmp.append("srVisibility")
-                    tmp.append(document['link'][i]['srVisibility'])
-                    tmp.append(response['kbLinks'][document_kbLinks_len-1-i]['srVisibility'])
-                    tmp.append("Failed")
+            for doc_link in document['link']:
+                match_level = 0
+                found = 0
+                match_location = 0
+                counter = 0
+                old_match_level = 0
+                match_data = ""
+                for resp in response['kbLinks']:
+                    match_level = 0
+                    if doc_link['kbId'] == ("" if resp['kbId'] is None else resp['kbId']):
+                        match_level += 1
+                    if doc_link['status'] == ("" if resp['status'] is None else resp['status']):
+                        match_level += 1
+                    if doc_link['description'] == ("" if resp['description'] is None else resp['description']):
+                        match_level += 1
+                    if doc_link['internalId'] == ("" if resp['internalId'] is None else resp['internalId']):
+                        match_level += 1
+                    if doc_link['url'] == ("" if resp['url'] is None else resp['url']):
+                        match_level += 1
+                    if doc_link['kbDate'] == ("" if resp['kbDate'] is None else str(resp['kbDate']).replace("-", "").replace(":", "").replace(" ", "")):
+                        match_level += 1
+                    if doc_link['dataSource'] == ("" if resp['dataSource'] is None else resp['dataSource']):
+                        match_level += 1
+                    if doc_link['sourceVisibility'] == ("" if resp['srcVisiblity'] is None else resp['srcVisiblity']):
+                        match_level += 1
+                    if doc_link['integrated'] == ("" if resp['kbFlag'] is None else resp['kbFlag']):
+                        match_level += 1
+                    if doc_link['srVisibility'] == ("" if resp['srVisibility'] is None else resp['srVisibility']):
+                        if match_level >= 9:
+                            found = 1
+                            match_level += 1
+                            match_location = counter
+                            match_data = resp
+                            break;
+                    if match_level >= old_match_level:
+                        match_location = counter
+                        old_match_level = match_level
+                        match_data = resp
+                    counter += 1
+                if found == 0:
+                    print "************************************************"
+                    print "Data Mismatch, max number of values matched is "+str(old_match_level)
+                    print "Kafka ==> "+str(json.dumps(doc_link, sort_keys=True))
+                    print "API   ==> "+str(json.dumps(match_data, sort_keys=True))
+                    tmp = ["", ""]
+                    tmp.append("Incorrect value for 'kbLinks'!")
                     table.append(tmp)
                     status = 1
-                tmp = []
+                    print "************************************************"
+                else:
+                    print "Data matched, highest level of match is "+str(match_level)
+                    print "Kafka ==> "+str(json.dumps(doc_link, sort_keys=True))
+                    print "API   ==> "+str(json.dumps(match_data, sort_keys=True))
+                    tmp = ["", ""]
+                    tmp.append("Match found for 'kbLinks'!")
+                    table.append(tmp)
+
             if status == 0:
                 print "Match Found"
                 row.append("Match Found")
             else:
-                print tabulate(table, headers=["LinkNo", "Key", "Kafka", "API", "Status"], tablefmt="rst")
-
+                print "\nCompared JSONs"
+                print "Kafka: "+str(json.dumps(document['link'], sort_keys=True))
+                print "API: "+str(json.dumps(response['kbLinks'], sort_keys=True))
+                print tabulate(table, headers=["Kafka", "API", "Status"], tablefmt="rst")
         else:
-            print "No Match Found"
-            row.append("No Match Found")
+            print "No Match Found in Hadoop."
+            row.append("No Match Found in Hadoop.")
         return row
 
-    def get_case_note_desc_by_case_note_id(self, case_id, note_id):
-        pass
-
-    def get_case_note_log_by_case_note_id(self, case_id, note_id):
-        pass
-
-    def get_account_by_account_id(self, account_id):
-        pass
-
-    def get_account_by_account_name(self, account_name):
-        pass
-
-    def get_user_by_user_id(self, user_id):
-        pass
-
-    def get_user_by_user_name(self, user_name):
-        pass
-
-
-#client = MongoClient('10.219.48.134', 27017)
 client = MongoClient('10.219.48.134', 27017)
+#client = MongoClient('192.168.56.101', 27017)
 db = client['SAPEvent']
 collection = db['srKbLink']
 api = HBase()
 document_no = 0
 #documents = collection.find({})
-documents = collection.find({'caseId':'2015-1008-T-0003'})
+documents = collection.find({ 'caseId': '2015-1117-T-0021'})
 ofile = open('srKbLink.csv', "wb")
 writer = csv.writer(ofile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
 row = ["SNo", "CaseID", "KafkaJSON", "APIResponse", "Status"]

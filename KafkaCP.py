@@ -1,4 +1,3 @@
-#### For all old messages and new messages
 __author__ = 'asifj'
 
 import logging
@@ -6,6 +5,8 @@ from kafka import KafkaConsumer
 import json
 import traceback
 from bson.json_util import dumps
+from kafka import SimpleProducer, KafkaClient
+from utils import Utils
 
 
 logging.basicConfig(
@@ -13,36 +14,26 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-# To consume messages
+inputs = []
 consumer = KafkaConsumer("SAPEvent", bootstrap_servers=['172.22.147.242:9092', '172.22.147.232:9092', '172.22.147.243:9092'], auto_commit_enable=False, auto_offset_reset="smallest")
-# group_id='CLIEvent-grp',
-#consumer.configure(bootstrap_servers=['172.22.147.242:9092', '172.22.147.232:9092', '172.22.147.243:9092'], auto_commit_enable=False, auto_offset_reset="smallest")
 message_no = 1
-for message in consumer:
-    # message value is raw byte string -- decode if necessary!
-    # e.g., for unicode: `message.value.decode('utf-8')`
-    #print("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,
-    #                                     message.offset, message.key,
-    #                                     message.value))
+inputs = consumer.fetch_messages()
+'''for message in consumer:
     topic = message.topic
     partition = message.partition
     offset = message.offset
     key = message.key
-    #print "Topic: "+str(topic)+", Partition: "+str(partition)+", Offset: "+str(offset)
     message = message.value
     print "================================================================================================================="
-    if not message is None:
+    if message is not None:
         try:
             document = json.loads(message)
-            #print "Event Type: "+str(document.keys())
-            #print "Message No: "+str(message_no)
             collection = document.keys()[0]
-            #print "Collection Name: "+str(collection)
-            #print "Debug Document ID: "+str(upsert_document_debug(collection, document[collection]))
             if collection == "customerMaster":
                 print "customerMaster"
             elif collection == "srAttachements":
-                print dumps(document, sort_keys=True)
+                #print dumps(document, sort_keys=True)
+                inputs.append(document)
         except Exception, err:
             print "CustomException"
             print "Kafka Message: "+str(message)
@@ -50,3 +41,24 @@ for message in consumer:
     print "================================================================================================================="
     print "\n"
     message_no += 1
+'''
+# To send messages synchronously
+kafka = KafkaClient('172.22.147.232:9092,172.22.147.242:9092,172.22.147.243:9092')
+producer = SimpleProducer(kafka)
+
+for i in inputs:
+    try:
+        #producer.send_messages(b'SAPEvent', json.dumps(input))
+        document = json.loads(str(i.value))
+        type = document.keys()[0]
+        if type == "srDetails":
+            print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            row = []
+            utils = Utils()
+            row = utils.validate_sr_details( document['srDetails'], row)
+            print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            print "\n\n"
+    except Exception:
+        print "Kafka: "+str(document)
+        print Exception.message
+        print(traceback.format_exc())

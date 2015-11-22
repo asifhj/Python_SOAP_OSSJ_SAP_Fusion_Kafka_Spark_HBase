@@ -18,158 +18,126 @@ class HBase:
         pass
 
     def get_case_by_case_id(self, document, row):
-        print self.url+"case-manager/cases/"+str(document['caseId'])
+        print "API URL: "+self.url+"case-manager/cases/"+str(document['caseId'])
         r = requests.get(self.url+"case-manager/cases/"+str(document['caseId']))
         print "CaseID: "+str(document['caseId'])
         print "Response: "+str(r.status_code)
-        keys = len(document.keys())
-        print "Keys: "+str(keys)
+        #keys = len(document.keys())
+        #print "Keys: "+str(keys)
         row.append(r.status_code)
         status = 0
         if r.status_code==200:
             response = json.loads(r.text)
-            #print json.dumps(response, indent=4)
-            #print document
             table = []
             if not (str(document['caseId']).strip() == "" if response['srId'] is None else str(response['srId']).strip()):
                 print "Incorrect value for 'caseId'!"
                 status = 1
-
-            response_attachment_len = len(response['attachments'])
+            if response['attachments'] is not None:
+                response_attachment_len = len(response['attachments'])
+            else:
+                response_attachment_len = 0
             document_attachment_len = len(document['attachment'])
-            #print json.dumps(document['attachment'], indent=4)
-            #print json.dumps(response['attachments'], indent=4)
-            if response_attachment_len>=document_attachment_len:
-                for i in range(0, document_attachment_len):
-                    tmp = [i]
-                    #print json.dumps(document['attachment'][i], indent=4)
-                    #print json.dumps(response['attachments'][i], indent=4)
-                    zDate = str(document['attachment'][i]['zDate'])
-                    zDate = zDate[:4]+"-"+zDate[4:6]+"-"+zDate[6:]
-                    if not document['attachment'][i]['sequenceNumber'] == response['attachments'][i]['attNo']:
-                        tmp.append("sequenceNumber")
-                        tmp.append(document['attachment'][i]['sequenceNumber'])
-                        tmp.append(response['attachments'][i]['attNo'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
+            if type(document['attachment']) is dict:
+                print "attachment in document is not an array!"
+                document_attachment_len = 1
+                document['attachment'] =  [document['attachment']]
 
-                    if not document['attachment'][i]['title'] == response['attachments'][i]['title']:
-                        tmp.append("title")
-                        tmp.append(document['attachment'][i]['title'])
-                        tmp.append(response['attachments'][i]['title'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
-                        status = 1
+            print "Number of attachments in document: "+str(document_attachment_len)
+            print "Number of attachments in API response: "+str(response_attachment_len)
 
-                    if not document['attachment'][i]['zTime'] == response['attachments'][i]['zTime']:
-                        tmp.append("zTime")
-                        tmp.append(document['attachment'][i]['zTime'])
-                        tmp.append(response['attachments'][i]['zTime'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
-                        status = 1
+            if document_attachment_len==0:
+                print "No attachment found in document!"
+                row.append("No attachment found in document!")
+                print "Kafka: "+str(json.dumps(document['attachment'], sort_keys=True))
+                print "API: "+str(json.dumps(response['attachments'], sort_keys=True))
+                return row
+            if response_attachment_len==0 and document_attachment_len>0:
+                print "No attachment found in API response but present in document."
+                row.append("No attachment found in API response but present in document.")
+                print "Kafka: "+str(json.dumps(document['attachment'], sort_keys=True))
+                print "API: "+str(json.dumps(response['attachments'], sort_keys=True))
+                return row
 
-                    if not document['attachment'][i]['fileType'] == response['attachments'][i]['fileType']:
-                        tmp.append("fileType")
-                        tmp.append(document['attachment'][i]['fileType'])
-                        tmp.append(response['attachments'][i]['fileType'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
-                        status = 1
 
-                    if not document['attachment'][i]['private'] == response['attachments'][i]['private1']:
-                        tmp.append("private")
-                        tmp.append(document['attachment'][i]['private'])
-                        tmp.append(response['attachments'][i]['private1'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
-                        status = 1
-
-                    if not document['attachment'][i]['dateCreated'] == response['attachments'][i]['dateCreated']:
-                        tmp.append("dateCreated")
-                        tmp.append(document['attachment'][i]['dateCreated'])
-                        tmp.append(response['attachments'][i]['dateCreated'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
-                        status = 1
-
-                    if not document['attachment'][i]['createdBy'] == response['attachments'][i]['createdBy']:
-                        tmp.append("createdBy")
-                        tmp.append(document['attachment'][i]['createdBy'])
-                        tmp.append(response['attachments'][i]['createdBy'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
-                        status = 1
-
-                    if not document['attachment'][i]['path'] == response['attachments'][i]['path']:
-                        tmp.append("path")
-                        tmp.append(document['attachment'][i]['path'])
-                        tmp.append(response['attachments'][i]['path'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
-                        status = 1
-
-                    if not document['attachment'][i]['uploadedBy'] == response['attachments'][i]['uploadedBy']:
-                        tmp.append("uploadedBy")
-                        tmp.append(document['attachment'][i]['uploadedBy'])
-                        tmp.append(response['attachments'][i]['uploadedBy'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
-                        status = 1
-
-                    if not document['attachment'][i]['size'] == response['attachments'][i]['size1']:
-                        tmp.append("size")
-                        tmp.append(document['attachment'][i]['size'])
-                        tmp.append(response['attachments'][i]['size1'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
-                        status = 1
-
-                    if not zDate == response['attachments'][i]['zDate']:
-                        tmp.append("zDate")
-                        tmp.append(zDate)
-                        tmp.append(response['attachments'][i]['zDate'])
-                        tmp.append("Failed")
-                        table.append(tmp)
-                        tmp = [i]
-                        status = 1
-                if status == 0:
-                    print "Match Found"
-                    row.append("Match Found")
+            for doc_attachment in document['attachment']:
+                match_level = 0
+                found = 0
+                match_location = 0
+                counter = 0
+                old_match_level = 0
+                zDate = str(doc_attachment['zDate'])
+                zDate = zDate[:4]+"-"+zDate[4:6]+"-"+zDate[6:]
+                match_data = ""
+                for resp in response['attachments']:
+                    match_level = 0
+                    doc_private = doc_attachment.get('private', "")
+                    if doc_private:
+                        doc_private = doc_attachment.get('Private', "")
+                    if doc_private:
+                        doc_private = doc_attachment.get('isPrivate', "")
+                    if doc_attachment['sequenceNumber'] == ("" if resp['attNo'] is None else resp['attNo']):
+                        match_level += 1
+                    if doc_attachment['title'] == ("" if resp['title'] is None else resp['title']):
+                        match_level += 1
+                    if doc_attachment['zTime'] == ("" if resp['zTime'] is None else resp['zTime']):
+                        match_level += 1
+                    if doc_attachment['fileType'] == ("" if resp['fileType'] is None else resp['fileType']):
+                        match_level += 1
+                    if doc_private == ("" if resp['private1'] is None else resp['private1']):
+                        match_level += 1
+                    if doc_attachment['dateCreated'] == ("" if resp['dateCreated'] is None else resp['dateCreated']):
+                        match_level += 1
+                    if doc_attachment['createdBy'] == ("" if resp['createdBy'] is None else resp['createdBy']):
+                        match_level += 1
+                    if doc_attachment['path'] == ("" if resp['path'] is None else resp['path']):
+                        match_level += 1
+                    if doc_attachment['uploadedBy'] == ("" if resp['uploadedBy'] is None else resp['uploadedBy']):
+                        match_level += 1
+                    if doc_attachment['size'] == ("" if resp['size1'] is None else int(resp['size1'])):
+                        match_level += 1
+                    if zDate == ("" if resp['zDate'] is None else resp['zDate']):
+                        if match_level >= 10:
+                            found = 1
+                            match_level += 1
+                            match_location = counter
+                            match_data = resp
+                            break;
+                    if match_level >= old_match_level:
+                        match_location = counter
+                        old_match_level = match_level
+                        match_data = resp
+                    counter += 1
+                if found == 0:
+                    print "************************************************"
+                    print "Data Mismatch, max number of values matched is "+str(old_match_level)
+                    print "Kafka ==> "+str(json.dumps(doc_attachment, sort_keys=True))
+                    print "API   ==> "+str(json.dumps(match_data, sort_keys=True))
+                    print set(doc_attachment) ^ set(match_data)
+                    tmp = ["", ""]
+                    tmp.append("Incorrect value for 'attachment'!")
+                    table.append(tmp)
+                    status = 1
+                    print "************************************************"
                 else:
-                    print tabulate(table, headers=["AttachmentNo", "Key", "Kafka", "API", "Status"], tablefmt="rst")
+                    print "Data matched, highest level of match is "+str(match_level)
+                    print "Kafka ==> "+str(json.dumps(doc_attachment, sort_keys=True))
+                    print "API   ==> "+str(json.dumps(match_data, sort_keys=True))
+                    tmp = ["", ""]
+                    tmp.append("Match found for 'attachment'!")
+                    table.append(tmp)
+            if status == 0:
+                print "Match Found"
+                row.append("Match Found")
+            else:
+                print "\nCompared JSONs"
+                print "Kafka: "+str(json.dumps(document['attachment'], sort_keys=True))
+                print "API: "+str(json.dumps(response['attachments'], sort_keys=True))
+                print tabulate(table, headers=["Kafka", "API", "Status"], tablefmt="rst")
         else:
-            print "No Match Found"
-            row.append("No Match Found")
+            print "No Match Found in Hadoop."
+            row.append("No Match Found in Hadoop.")
         return row
 
-    def get_case_note_desc_by_case_note_id(self, case_id, note_id):
-        pass
-
-    def get_case_note_log_by_case_note_id(self, case_id, note_id):
-        pass
-
-    def get_account_by_account_id(self, account_id):
-        pass
-
-    def get_account_by_account_name(self, account_name):
-        pass
-
-    def get_user_by_user_id(self, user_id):
-        pass
-
-    def get_user_by_user_name(self, user_name):
-        pass
 
 
 client = MongoClient('10.219.48.134', 27017)
@@ -178,8 +146,9 @@ db = client['SAPEvent']
 collection = db['srAttachements']
 api = HBase()
 document_no = 0
-documents = collection.find({})
-#documents = collection.find({'caseId':'2015-1005-T-0028'})
+#documents = collection.find({})
+#documents = collection.find(no_cursor_timeout=True)[0:]
+documents = collection.find({ 'caseId': '2015-1116-T-0002'})
 ofile = open('srAttachments.csv', "wb")
 writer = csv.writer(ofile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
 row = ["SNo", "CaseID", "KafkaJSON", "APIResponse", "Status"]
@@ -196,6 +165,7 @@ for document in documents:
         #print json.dumps(document, indent=4)
         row = api.get_case_by_case_id(document, row)
     except Exception:
+        print "Kafka: "+str(document)
         print Exception.message
         print(traceback.format_exc())
     writer.writerow(row)

@@ -1,4 +1,3 @@
-__author__ = 'asifj'
 import requests
 from pymongo import MongoClient
 from bson import Binary, Code
@@ -8,29 +7,57 @@ import traceback
 import logging
 from tabulate import tabulate
 import datetime
+from kafka import SimpleProducer, KafkaClient
+from kafka import (
+    KafkaClient, KeyedProducer,
+    RoundRobinPartitioner)
+
+__author__ = 'asifj'
 
 logging.basicConfig(
     format='%(asctime)s.%(msecs)s:%(name)s:%(thread)d:%(levelname)s:%(process)d:%(message)s',
-    level=logging.DEBUG
+    level=logging.ERROR
 )
 
-class HBase:
+
+class ScaleUtils:
     def __init__(self):
         self.url = "http://172.22.147.248:8092/api/"
+        self.result = "Not found in Hadoop"
         pass
 
-    def get_case_by_case_id(self, document, row):
-        print "API URL: "+self.url+"case-manager/cases/"+str(document['caseId'])
-        r = requests.get(self.url+"case-manager/cases/"+str(document['caseId']))
-        print "CaseID: "+str(document['caseId'])
-        print "Response: "+str(r.status_code)
+    def getKafkaProducer(self):
+        # To send messages synchronously
+        kafka = KafkaClient('172.22.147.232:9092,172.22.147.242:9092,172.22.147.243:9092')
+        # HashedPartitioner is default (currently uses python hash())
+        producer = KeyedProducer(kafka, partitioner=RoundRobinPartitioner)
+        return producer
+
+    def generateJSON(self, count):
+        data = { "srDetails" : { "srCategory4" : "", "srCategory2" : "", "srCategory3" : "", "srCategory1" : "", "previousTeam" : "", "zzQ10" : "", "sirtBundle" : "", "endDate" : "00000000", "knowledgeArticle" : "", "outageInfoAvailable" : "", "sku" : "", "customerCaseNumber" : "", "yearRoundSupport" : "", "totalOutageTime" : "00000000", "zzQ3" : "", "zzQ2" : "", "zzQ1" : "", "outageImpactKey" : "", "zzQ7" : "", "zzQ6" : "", "zzQ5" : "", "zzQ4" : "", "ccList" : "", "zzQ9" : "", "zzQ8" : "", "processType" : "ZTEC", "ccEngineer" : "", "numberOfUsersAffected" : "", "contractId" : "", "criticalOutage" : "", "previousOwnerSkill" : "", "followupMethodKey" : "", "specialRelease" : "", "release" : "", "startDate" : "00000000", "warrantyEndDate" : "00000000", "escalation" : "", "jsaAdvisoryBoard" : "", "viaDescription" : "JSS request", "employeeId" : "", "severityKey" : "04", "secVulnerability" : "", "version" : "", "outageDescription" : "", "statusKey" : "E0004", "theaterDescription" : "AMER", "contractStatus" : "", "productSeries" : "M-Series", "escalationkey" : "0", "reason" : "Customer Responded", "outageCauseDescription" : "", "serviceProduct" : "", "processTypeDescription" : "Technical Service Request", "country" : "US", "courtesykey" : "", "betaType" : "", "entitlementChecked" : "", "internalUse" : "", "smeContact" : "", "software" : "", "reporterDetails" : "", "technicalCategory4" : "", "subReason" : "", "technicalCategory1" : "", "technicalCategory3" : "", "technicalCategory2" : "", "caseId" : "2015-1119-T-0038", "temperature" : "", "platform" : "M10i", "entitledSerialNumber" : "K1915", "priority" : "P4 - Low", "viaKey" : "ZJS", "srReqDate" : [ { "dateStamp" : "20151119173510", "duration" : "", "dateType" : "Last Update from Reporter", "timeUnit" : "" }, { "dateStamp" : "20151119173509", "duration" : "", "dateType" : "L1 Assignment Date", "timeUnit" : "" }, { "dateStamp" : "20151119173510", "duration" : "", "dateType" : "Ownership Date", "timeUnit" : "" }, { "dateStamp" : "20151119173509", "duration" : "", "dateType" : "First Responsible group assignment", "timeUnit" : "" }, { "dateStamp" : "20151119173506", "duration" : "", "dateType" : "Create Date", "timeUnit" : "" }, { "dateStamp" : "20151122173506", "duration" : "", "dateType" : "Requested Delivery Date Proposal", "timeUnit" : "" }, { "dateStamp" : "20151119173506", "duration" : "", "dateType" : "First Response By", "timeUnit" : "" }, { "dateStamp" : "20151119193508", "duration" : "", "dateType" : "ToDo By", "timeUnit" : "" }, { "dateStamp" : "20151119173509", "duration" : "", "dateType" : "JTAC L1 Assigned", "timeUnit" : "" }, { "dateStamp" : "20151119173510", "duration" : "", "dateType" : "Last Modified date", "timeUnit" : "" }, { "dateStamp" : "20151126173506", "duration" : "", "dateType" : "Update frequency", "timeUnit" : "" } ], "outageKey" : "", "priorityKey" : "04", "theaterKey" : "2", "escalationLevelDescription" : "", "outageTypeKey" : "", "entitlementServiceLevel" : "", "cve" : "", "urgencyKey" : "", "courtesyDescription" : "", "top5" : "", "criticalIssue" : "", "jtac" : "", "followupMethod" : "", "routerName" : "", "severity" : "S4 - Customer Problem/Query", "outsourcer" : "", "numberOfSystemsAffected" : "", "outageTypeDescription" : "", "build" : "", "cvss" : "", "productId" : "M10IBASE-AC", "status" : "Dispatch", "externallyReported" : "", "description" : "2015-11-19 23:05:02.476000 Some Issue Creating test case to verify SAP and Hadoop functionality", "raFa" : "", "entitlementSource" : "", "outageCauseKey" : "", "employeeEmail" : "", "partnerFunction" : [ { "partnerName" : "COMPUTER SCIENCE CORPORATION", "partnerId" : "0100167296", "partnerFunctionName" : "Sold-To Party", "partnerFunctionKey" : "00000001" }, { "partnerName" : "PSML1 JTAC-M-JTAC L1", "partnerId" : "0089512611", "partnerFunctionName" : "Responsible Group", "partnerFunctionKey" : "00000099" }, { "partnerName" : "Test Test", "partnerId" : "0200006266", "partnerFunctionName" : "Reporter (Person)", "partnerFunctionKey" : "00000151" } ], "escalationLevelKey" : "0", "overideOutage" : "", "serialNumber" : "K1915", "outageImpactDescription" : "", "urgency" : ""}}
+        cases_data = []
+        for i in range(0, count):
+            cases_data.append(data)
+        return data
+
+
+
+    def request(self, caseId):
+        r = requests.get(self.url+"case-manager/cases/"+str(caseId))
+        return r
+
+    def verify_ticket_details(self, document, r, output):
+        output += "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        output += "\nAPI URL: "+self.url+"case-manager/cases/"+str(document['caseId'])
+        #r = requests.get(self.url+"case-manager/cases/"+str(document['caseId']))
+        output += "\nCaseID: "+str(document['caseId'])
+        output += "\nResponse: "+str(r.status_code)
         keys = len(document.keys())
-        print "Keys: "+str(keys)
-        row.append(r.status_code)
+        output += "\nKeys: "+str(keys)
         status = 0
         if r.status_code==200:
             response = json.loads(r.text)
-            #print json.dumps(response, indent=4)
+            #output += json.dumps(response, indent=4)
             table = []
             if not (str(document['betaType']).strip()) == ("" if response['betaType'] is None else str(response['betaType']).strip()):
                 tmp = [str(document['betaType']).strip(), str(response['betaType']).strip()]
@@ -129,11 +156,11 @@ class HBase:
                 else:
                     endDate = datetime.datetime.fromtimestamp(float(endDate)/1000).strftime('%Y%m%d')
             except Exception:
-                print "EndDate issue: "+str(Exception.message)
-                print(traceback.format_exc())
+                output += "\nEndDate issue: "+str(Exception.message)
+                output +=(traceback.format_exc())
                 endDate = endDate.replace("00:00:00", "")
                 endDate = endDate.replace("-", "")
-                print "endDate: "+str(endDate)
+                output += "\nendDate: "+str(endDate)
 
             if not (str(document['endDate']).strip()) == endDate.strip():
                 tmp = [str(document['endDate']).strip(), endDate, "Incorrect value for 'endDate'!"]
@@ -456,11 +483,11 @@ class HBase:
                 else:
                     startDate = datetime.datetime.fromtimestamp(float(startDate)/1000).strftime('%Y%m%d')
             except Exception:
-                print "StartDate issue: "+str(Exception.message)
-                print(traceback.format_exc())
+                output += "\nStartDate issue: "+str(Exception.message)
+                output +=(traceback.format_exc())
                 startDate = startDate.replace("00:00:00", "")
                 startDate = startDate.replace("-", "")
-                print "StartDate: "+str(startDate)
+                output += "\nStartDate: "+str(startDate)
 
             if not (str(document['startDate']).strip()) == startDate.strip():
                 tmp = [str(document['startDate']).strip(), startDate, "Incorrect value for 'startDate'!"]
@@ -628,7 +655,6 @@ class HBase:
                 tmp.append("Incorrect value for 'zzQ10'!")
                 table.append(tmp)
                 status = 1
-                row.append("No Match Found")
 
             if not (str(document['ccList']).strip()== ("" if response['outage']['ccCustomer'] is None else str(response['outage']['ccCustomer']).strip())):
                 tmp = [str(document['ccList']).strip(), str(response['outage']['ccCustomer']).strip()]
@@ -678,11 +704,11 @@ class HBase:
                 table.append(tmp)
                 status = 1
 
-            print "\n\n##############################################"
-            print "\tMatching Dates details...."
-            print "##############################################\n\n"
-            print "Number of srDates in document: "+str(len(document['srReqDate']))
-            print "Number of Dates in API response: "+str(len(response['dates']))
+            output += "\n\n##############################################"
+            output += "\n\tMatching Dates details...."
+            output += "\n##############################################\n\n"
+            output += "\nNumber of srDates in document: "+str(len(document['srReqDate']))
+            output += "\nNumber of Dates in API response: "+str(len(response['dates']))
             if document['srReqDate']:
                 if response['dates']:
                     srReqDate = {'d': document['srReqDate']}
@@ -728,35 +754,35 @@ class HBase:
                                 old_match_level = match_level
                             counter += 1
                         if found == 0:
-                            #print "************************************************"
-                            print "Dates Data Mismatch, max number of values matched is "+str(old_match_level)
-                            print "Kafka ==> "+str(json.dumps(srd, sort_keys=True))
-                            print "API   ==> "+str(json.dumps(match_data, sort_keys=True))
+                            #output += "\n************************************************"
+                            output += "\nDates Data Mismatch, max number of values matched is "+str(old_match_level)
+                            output += "\nKafka ==> "+str(json.dumps(srd, sort_keys=True))
+                            output += "\nAPI   ==> "+str(json.dumps(match_data, sort_keys=True))
                             tmp = ["", "", "Incorrect value for 'srDate'!"]
                             table.append(tmp)
                             status = 1
-                            print "************************************************"
+                            output += "\n************************************************"
                         else:
-                            #print "************************************************"
-                            print "Dates Data matched, highest level of match is "+str(match_level)+". Data is "+str(json.dumps(srd))
-                            #print "\tKafak ==> "+str(json.dumps(srd, sort_keys=True))
-                            #print "\tAPI   ==> "+str(json.dumps(match_data, sort_keys=True))
-                            print "************************************************"
+                            #output += "\n************************************************"
+                            output += "\nDates Data matched, highest level of match is "+str(match_level)+". Data is "+str(json.dumps(srd))
+                            #output += "\n\tKafak ==> "+str(json.dumps(srd, sort_keys=True))
+                            #output += "\n\tAPI   ==> "+str(json.dumps(match_data, sort_keys=True))
+                            output += "\n************************************************"
                 else:
-                    print "No dates found in API response, but available in Kafka message."
-                    print "Kafka Message: "+str(json.dumps(document['srReqDate']))
+                    output += "\nNo dates found in API response, but available in Kafka message."
+                    output += "\nKafka Message: "+str(json.dumps(document['srReqDate']))
             else:
-                print "No dates found in Kafka message."
+                output += "\nNo dates found in Kafka message."
 
             for pf in document['partnerFunction']:
                 if str(pf['partnerName']).strip() == "":
                     pf['partnerName'] = None
 
-            print "\n\n##############################################"
-            print "\tMatching Partner Functions details...."
-            print "##############################################\n\n"
-            print "Number of PartnerFunction in document: "+str(len(document['partnerFunction']))
-            print "Number of PartnerFunction in API response: "+str(len(response['partnerFunctions']))
+            output += "\n\n\n##############################################"
+            output += "\n\tMatching Partner Functions details...."
+            output += "\n##############################################\n\n"
+            output += "\nNumber of PartnerFunction in document: "+str(len(document['partnerFunction']))
+            output += "\nNumber of PartnerFunction in API response: "+str(len(response['partnerFunctions']))
 
             if document['partnerFunction']:
                 if response['partnerFunctions']:
@@ -788,70 +814,41 @@ class HBase:
                                 match_data = pf2
                             counter += 1
                         if found == 0:
-                            #print "************************************************"
-                            print "ParnterFunction Data Mismatch, highest level of match is "+str(old_match_level)
-                            print "Kafka ==> "+str(json.dumps(pf, sort_keys=True))
-                            print "API   ==> "+str(json.dumps(match_data, sort_keys=True))
+                            #output += "\n************************************************"
+                            output += "\nParnterFunction Data Mismatch, highest level of match is "+str(old_match_level)
+                            output += "\nKafka ==> "+str(json.dumps(pf, sort_keys=True))
+                            output += "\nAPI   ==> "+str(json.dumps(match_data, sort_keys=True))
                             tmp = ["", "", "Incorrect value for 'PartnerFunction'!"]
                             table.append(tmp)
                             status = 1
-                            print "************************************************"
+                            output += "\n************************************************"
                         else:
-                            #print "************************************************"
-                            print "PartnerFunction Data matched, highest level of match is "+str(match_level)+". Data is "+str(json.dumps(pf))
-                            #print "Kafka ==> "+str(json.dumps(pf, sort_keys=True))
-                            #print "API   ==> "+str(json.dumps(match_data, sort_keys=True))
-                            print "************************************************"
+                            #output += "\n************************************************"
+                            output += "\nPartnerFunction Data matched, highest level of match is "+str(match_level)+". Data is "+str(json.dumps(pf))
+                            #output += "\nKafka ==> "+str(json.dumps(pf, sort_keys=True))
+                            #output += "\nAPI   ==> "+str(json.dumps(match_data, sort_keys=True))
+                            output += "\n************************************************"
                 else:
-                    print "No partners found in API response, but available in Kafka message."
-                    print "Kafka Message: "+str(json.dumps(document['partnerFunction']))
+                    output += "\nNo partners found in API response, but available in Kafka message."
+                    output += "\nKafka Message: "+str(json.dumps(document['partnerFunction']))
             else:
-                print "No partners found in Kafka message."
+                output += "\nNo partners found in Kafka message."
 
             if status==0:
-                print "Match Found"
-                row.append("Match Found")
+                self.result = "Match Found"
+                output += "\nMatch Found"
             else:
-                #print "\nCompared JSONs"
-                #print "Kafka: "+str(document)
-                #print "API: "+str(json.dumps(response, sort_keys=True))
-                print tabulate(table, headers=["Kafka", "API", "Status"], tablefmt="rst")
+                self.result = "Data Mismatch"
+                output += "\n\nCompared JSONs"
+                output += "\nKafka: "+str(document)
+                output += "\nAPI: "+str(json.dumps(response, sort_keys=True))
+                output += tabulate(table, headers=["Kafka", "API", "Status"], tablefmt="rst")
+                output += "\n\n\nDocument:\n\n"+str(document)
         else:
-            print "No Match Found in Hadoop."
-            row.append("No Match Found in Hadoop.")
-        return row
+            output += "\nNo Match Found in Hadoop."
+        return output
 
-client = MongoClient('10.219.48.134', 27017)
-#client = MongoClient('192.168.56.101', 27017)
-db = client['SAPEvent']
-collection = db['srDetails']
-api = HBase()
-document_no = 0
-documents = collection.find({ 'caseId': '2015-1118-T-0603'})
-#documents = collection.find({})
-ofile = open('srDetails.csv', "wb")
-writer = csv.writer(ofile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-row = ["SNo", "CaseID", "KafkaJSON", "APIResponse", "Status"]
-writer.writerow(row)
-for document in documents:
-    row = []
-    document_no += 1
-    row.append(document_no)
-    row.append(document['caseId'])
-    row.append(str(document).replace("\n", ""))
-    print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    print "Document No: "+str(document_no)
-    try:
-        #print json.dumps(document, indent=4)
-        row = api.get_case_by_case_id(document, row)
-        #print document['endDate']
-    except Exception:
-        print Exception.message
-        print(traceback.format_exc())
-    writer.writerow(row)
-    print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    print "\n\n"
-ofile.close()
+
 
 
 

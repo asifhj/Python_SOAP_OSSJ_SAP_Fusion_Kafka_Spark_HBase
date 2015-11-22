@@ -12,6 +12,10 @@
 ./kafka-console-producer.sh --broker-list localhost:9092 --topic test
 
 
+In srdetail
+escalation
+all technicalcategory
+
 
 bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic my-replicated-topic
 
@@ -60,6 +64,71 @@ Method: POST
 Pass the account name in the request body as follow and set the content type to “application/json”
 {“userName”:“Email Id / user name of the User”}
 
+
+8. http://172.22.147.248:8092/api/user-manager/users
+
+
 2015-1019-T-0019
 
 db.getCollection('customerMaster').find({'relationship':{$elemMatch:   {'contactId': '0000037825', 'accountId': 100197496} }})
+
+
+                if not document["header"][""] == response[""]:
+                    tmp = [str(document["header"][""]).strip(), str(response[""]).strip(),
+                           "Incorrect value for 'ccEngineer'!"]
+                    table.append(tmp)
+                    status = 1
+
+
+                if not document["header"][""] == response[""]:
+                    tmp = [str(document["header"][""]).strip(), str(response[""]).strip(),
+                           "Incorrect value for 'ccEngineer'!"]
+                    table.append(tmp)
+                    status = 1
+
+
+def worker_func_sr(utils, queue, output_writer, response_writer):
+    while True:
+        data = queue.get()
+        document = data[0]
+        document_no = data[1]
+        startTime = data[2]
+        output = ""
+        try:
+            output += utils.header(document, document_no, "SRID")
+            response = utils.request(document, "SRID")
+            output += "\n*******************************************"
+            output += "\nVerifying srDetails..."
+            output += "\n*******************************************"
+            #output += utils.validate_sr_details(response, document, document_no, startTime, response_writer)
+            client = MongoClient('10.219.48.134', 27017)
+            db = client['ImportedEvents']
+            collection_new = db['srKbLink-new']
+            key = {'caseId': document['SRID']}
+            document_kbLinks = collection_new.find_one({'caseId': document['SRID']})
+            res = json.loads(response.text)
+            output += "\n\n\n*******************************************"
+            output += "\nVerifying kbLinks..."
+            output += "\n*******************************************"
+            if document_kbLinks is None:
+                output += "\n No kblinks found in document"
+                if not res['kbLinks']:
+                    output += "\n No kbLinks found in response"
+                else:
+                    output += "\n kbLinks found in response"
+            else:
+                if not res['kbLinks']:
+                    output += "\n No kbLinks found in response"
+                else:
+                    output += utils.validate_kb_links(response, document_kbLinks, document_no, startTime, response_writer)
+
+            output += utils.footer(output)
+            output_writer.write(output)
+            output = ""
+
+        except Exception:
+            print Exception.message
+            print "CaseId: "+str(document['SRID'])
+            print(traceback.format_exc())
+        print "\nProcessing completed document no: "+str(document_no)
+        queue.task_done()
